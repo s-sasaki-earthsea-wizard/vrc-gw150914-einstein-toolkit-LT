@@ -1,0 +1,157 @@
+{
+  "stage": "C",
+  "target_time_M": 1700.0,
+  "post_merger_delta_M": 50.0,
+  "psi4_extraction_radius_M": 100.0,
+  "official_reference": {
+    "merger_time_M": 899.0,
+    "M_final": 0.95,
+    "chi_final": 0.69,
+    "n_orbit": 6.0
+  },
+  "n16_dir": [
+    "/home/ew-s-sasaki-beacon/gw150914-output/gw150914-n16-stage-a",
+    "/home/ew-s-sasaki-beacon/gw150914-output/gw150914-n16-stage-b",
+    "/home/ew-s-sasaki-beacon/gw150914-output/gw150914-n16-stage-c"
+  ],
+  "n28_dir": "data/GW150914_N28_zenodo/extracted/GW150914_28",
+  "overall_pass": true,
+  "checks": {
+    "completion": {
+      "pass": true,
+      "n16_t_max_M": 1699.95323076923,
+      "target_M": 1700.0,
+      "details": "n16 reached t=1699.953 M"
+    },
+    "merger_time": {
+      "pass": true,
+      "n16": 925.145,
+      "n28": 898.712,
+      "delta_pct": 2.94120919716216,
+      "threshold_pct": 5.0
+    },
+    "m_final": {
+      "pass": true,
+      "n16": 0.9517624039088812,
+      "n28": 0.9527006115430828,
+      "delta_pct": -0.09847874797539971,
+      "threshold_pct": 2.0
+    },
+    "chi_final": {
+      "pass": true,
+      "n16": 0.6930446327164296,
+      "n28": 0.6876737137012591,
+      "delta": 0.0053709190151705055,
+      "threshold": 0.02
+    },
+    "n_orbit": {
+      "pass": true,
+      "n16": 5.077799588755818,
+      "n28": 4.923360874006136,
+      "delta": 0.1544387147496824,
+      "threshold": 0.5
+    },
+    "psi4_peak_amplitude": {
+      "pass": true,
+      "n16": 0.0007208657000113436,
+      "n28": 0.0007339799555717471,
+      "delta_pct": -1.7867321118037782,
+      "threshold_pct": 10.0
+    },
+    "psi4_peak_time_after_merger": {
+      "pass": true,
+      "n16": 113.71530769230753,
+      "n28": 113.99094505619803,
+      "delta": -0.2756373638904961,
+      "threshold": 20.0
+    }
+  },
+  "self_consistency": {
+    "available": true,
+    "eval_window_M": [
+      50.0,
+      500.0
+    ],
+    "n_samples": 467,
+    "m_final_drift": {
+      "pass": true,
+      "drift_pct": 0.0038437435614649593,
+      "threshold_pct": 1.0
+    },
+    "chi_final_drift": {
+      "pass": true,
+      "drift": 0.0004935673725164902,
+      "threshold": 0.05
+    }
+  },
+  "n16_raw_metrics": {
+    "merger_time_M": 925.145,
+    "post_merger": {
+      "m_horizon": 0.9517624039088812,
+      "J": 0.6277956403524981,
+      "m_irreducible": 0.8828576680757838,
+      "chi": 0.6930446327164296
+    },
+    "post_merger_delta_M": 50.0,
+    "n_orbit": {
+      "value": 5.077799588755818,
+      "t_start": 261.160615384615,
+      "t_end": 925.145
+    },
+    "psi4_peak": {
+      "t_peak": 1038.8603076923075,
+      "amp_peak": 0.0007208657000113436,
+      "n_samples": 1598,
+      "t_min": 0.0,
+      "t_max": 1699.9532307692307
+    },
+    "psi4_radius_M": 100.0,
+    "time_range": [
+      0.0,
+      1699.953
+    ],
+    "ah3_t_range": [
+      925.145,
+      1699.953
+    ],
+    "puncture_t_range": [
+      0.0,
+      1699.95323076923
+    ]
+  },
+  "n28_raw_metrics": {
+    "merger_time_M": 898.712,
+    "post_merger": {
+      "m_horizon": 0.9527006115430828,
+      "J": 0.6241591072092266,
+      "m_irreducible": 0.8850429413076695,
+      "chi": 0.6876737137012591
+    },
+    "post_merger_delta_M": 50.0,
+    "n_orbit": {
+      "value": 4.923360874006136,
+      "t_start": 261.160615384615,
+      "t_end": 898.712
+    },
+    "psi4_peak": {
+      "t_peak": 1012.702945056198,
+      "amp_peak": 0.0007339799555717471,
+      "n_samples": 3088,
+      "t_min": 0.0,
+      "t_max": 1699.953230771334
+    },
+    "psi4_radius_M": 100.0,
+    "time_range": [
+      0.0,
+      910.827
+    ],
+    "ah3_t_range": [
+      898.712,
+      1699.953
+    ],
+    "puncture_t_range": [
+      0.0,
+      1699.95323077133
+    ]
+  }
+}

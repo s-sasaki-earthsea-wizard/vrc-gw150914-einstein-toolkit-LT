@@ -1,0 +1,188 @@
+{
+  "stage": "A",
+  "target_time_M": 100.0,
+  "psi4_extraction_radius_M": 100.0,
+  "n16_dir": "/home/ew-s-sasaki-beacon/gw150914-output/gw150914-n16-stage-a",
+  "n28_dir": "data/GW150914_N28_zenodo/extracted/GW150914_28",
+  "overall_pass": false,
+  "checks": {
+    "completion": {
+      "pass": true,
+      "n16_t_max_M": 99.26,
+      "target_M": 100.0,
+      "details": "n16 reached t=99.260 M"
+    },
+    "separation_D": {
+      "pass": true,
+      "n16": 9.798022152400044,
+      "n28": 9.772990553098621,
+      "delta_pct": 0.25613039494330064,
+      "threshold_pct": 10.0
+    },
+    "orbital_angle": {
+      "pass": true,
+      "n16": 2.671503230933273,
+      "n28": 2.693648189468339,
+      "delta": -0.02214495853506593,
+      "threshold": 0.5
+    },
+    "m_irreducible_bh1": {
+      "pass": true,
+      "n16": 0.54699191873876,
+      "n28": 0.5469869236861289,
+      "delta_pct": 0.0009131941578077023,
+      "threshold_pct": 2.0
+    },
+    "m_irreducible_bh2": {
+      "pass": true,
+      "n16": 0.433604552932592,
+      "n28": 0.4334603783890614,
+      "delta_pct": 0.03326129693016589,
+      "threshold_pct": 2.0
+    },
+    "m_horizon_bh1": {
+      "pass": true,
+      "n16": 0.553849775777522,
+      "n28": 0.5538579168488937,
+      "delta_pct": -0.0014698844458197891,
+      "threshold_pct": 0.5
+    },
+    "m_horizon_bh2": {
+      "pass": true,
+      "n16": 0.44595326468116,
+      "n28": 0.44616465100637975,
+      "delta_pct": -0.04737854618087012,
+      "threshold_pct": 0.5
+    },
+    "chi_bh1": {
+      "pass": true,
+      "n16": 0.3098728925293641,
+      "n28": 0.3101580216710416,
+      "delta": -0.00028512914167749814,
+      "threshold": 0.005
+    },
+    "chi_bh2": {
+      "pass": false,
+      "n16": -0.4544521446476469,
+      "n28": -0.4603761062506924,
+      "delta": 0.0059239616030455355,
+      "threshold": 0.005
+    },
+    "psi4_22_phase": {
+      "pass": true,
+      "n16": -0.761037544772038,
+      "n28": -0.6739588559499768,
+      "delta": -0.08707868882206116,
+      "threshold": 0.5
+    },
+    "psi4_22_amplitude": {
+      "pass": null,
+      "n16": 1.4339857299400931e-05,
+      "n28": 1.6721089394332954e-05,
+      "delta_pct": -14.240890882020288,
+      "threshold_pct": 50.0,
+      "note": "provisional threshold, not counted in overall_pass"
+    }
+  },
+  "self_consistency": {
+    "available": true,
+    "m_irreducible_drift_bh1": {
+      "pass": true,
+      "drift_pct": 0.009715457623428495,
+      "threshold_pct": 1.0
+    },
+    "chi_drift_bh1": {
+      "pass": true,
+      "drift": 0.00039710223367717123,
+      "threshold": 0.01
+    },
+    "m_irreducible_drift_bh2": {
+      "pass": true,
+      "drift_pct": 0.04273918594474912,
+      "threshold_pct": 1.0
+    },
+    "chi_drift_bh2": {
+      "pass": true,
+      "drift": 0.006186864293775296,
+      "threshold": 0.01
+    }
+  },
+  "n16_raw_metrics": {
+    "t_target": 100.0,
+    "ah1": {
+      "centroid_x": -3.861431,
+      "centroid_y": 1.983941,
+      "centroid_z": -0.0,
+      "m_irreducible": 0.5469925564
+    },
+    "ah2": {
+      "centroid_x": 4.873778,
+      "centroid_y": -2.45423,
+      "centroid_z": 0.0,
+      "m_irreducible": 0.4336053062
+    },
+    "D": 9.798022152400044,
+    "orbital_angle": 2.671503230933273,
+    "qlm_bh1": {
+      "m_horizon": 0.553849775777522,
+      "J": 0.0950533778174454,
+      "m_irreducible": 0.54699191873876,
+      "chi": 0.3098728925293641
+    },
+    "qlm_bh2": {
+      "m_horizon": 0.44595326468116,
+      "J": -0.0903788586397783,
+      "m_irreducible": 0.433604552932592,
+      "chi": -0.4544521446476469
+    },
+    "psi4_22": {
+      "re": 1.0383789425402405e-05,
+      "im": -9.8898141810695e-06,
+      "amplitude": 1.4339857299400931e-05,
+      "phase": -0.761037544772038
+    },
+    "time_range": [
+      0.0,
+      99.26
+    ]
+  },
+  "n28_raw_metrics": {
+    "t_target": 100.0,
+    "ah1": {
+      "centroid_x": -3.9003862323049003,
+      "centroid_y": 1.9012197313974595,
+      "centroid_z": 0.0,
+      "m_irreducible": 0.5469875851709619
+    },
+    "ah2": {
+      "centroid_x": 4.908394101633394,
+      "centroid_y": -2.3315965154264977,
+      "centroid_z": 0.0,
+      "m_irreducible": 0.4334611056049002
+    },
+    "D": 9.772990553098621,
+    "orbital_angle": 2.693648189468339,
+    "qlm_bh1": {
+      "m_horizon": 0.5538579168488937,
+      "J": 0.09514363804274388,
+      "m_irreducible": 0.5469869236861289,
+      "chi": 0.3101580216710416
+    },
+    "qlm_bh2": {
+      "m_horizon": 0.44616465100637975,
+      "J": -0.09164380087091072,
+      "m_irreducible": 0.4334603783890614,
+      "chi": -0.4603761062506924
+    },
+    "psi4_22": {
+      "re": 1.3065142519996199e-05,
+      "im": -1.0435366858211614e-05,
+      "amplitude": 1.6721089394332954e-05,
+      "phase": -0.6739588559499768
+    },
+    "time_range": [
+      0.0,
+      910.827
+    ]
+  }
+}
