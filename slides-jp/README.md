@@ -1,8 +1,11 @@
-# vrc-solar-activity-on-IT
+# vrc-gw150914-einstein-toolkit-LT (slides-jp)
 
 ## 概要
 
-TBA.
+VRChat 物理学集会 LT 用スライド。テーマは
+**Einstein Toolkit による GW150914 数値相対論シミュレーションの再現**。
+本文・脚本は今後執筆 (TBA placeholder)。元プロジェクトの成果データは
+`../docs/` に移管済み。
 
 ## 開発環境
 

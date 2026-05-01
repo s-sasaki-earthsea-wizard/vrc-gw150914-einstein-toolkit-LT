@@ -13,9 +13,6 @@ media
 # Python cache
 __pycache__/
 
-# Documents
-docs
-
 # Generated PDF
 slides-jp/*.pdf
 
