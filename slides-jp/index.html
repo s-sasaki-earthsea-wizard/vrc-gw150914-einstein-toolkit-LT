@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <title>GW150914 を Einstein Toolkit で再現する　〜自宅マシンで連星 BH 合体を解いてみた〜</title>
+  <title>連星ブラックホール合体(GW150914)を自宅PCでシミュレーションしてみた</title>
 
   <link rel="stylesheet" href="dist/reset.css">
   <link rel="stylesheet" href="dist/reveal.css">
@@ -27,9 +27,9 @@
       <section data-markdown data-separator="---">
         <textarea data-template>
 
-### TBA
+### 連星ブラックホール合体(GW150914)を自宅PCでシミュレーションしてみた
 
-<img src="assets/images/title.png" height="400px">
+<img src="assets/images/title.png" height="320px">
 
 ---
 
@@ -38,8 +38,8 @@
 <div class="profile-container">
 <div class="profile-left">
 
-* さめ(мег-сск)
-  * ⚛️ VRChat物理学集会の主催
+* さめ (мег-сск)
+  * ⚛️ VRChat 物理学集会の主催
   * 🧑‍🎓 社会人学生として通信制大学在学中
 * 得意分野:
 	* 📸 コンピュータビジョン (画像認識/点群処理)
@@ -63,7 +63,11 @@
 
 <div class="simple-box">
 
-* TBA
+* 2015 年に LIGO が検出した**最初の重力波 GW150914** を、
+  数値相対論コード **Einstein Toolkit** で**自宅 PC** から再現してみた話
+* やったこと:
+  * 公式ギャラリーの解像度を個人所有の PC で実行できるよう**解像度を落として**完走
+  * 軌道・波形を **リファレンスデータ**と比較
 
 </div>
 
@@ -71,12 +75,238 @@
 
 <div class="highlight-box">
 
-※ TBA
+* 学術的に新規性のある研究ではない
+* **「動かしてみた」系の自由研究** という位置付け
+* **筆者は数値相対論をよく知らないど素人**
 
 </div>
 
 ---
 
+### 動機 — なぜやろうと思ったのか
+
+<div class="simple-box">
+
+* 連休中に旅行に行く予定があった
+  * PC を遊ばせておくのはもったいないのでせっかくなら**重い計算**を投げて回したい
+* どうせやるなら**インパクトのある計算**にしたい
+  * → **GW150914** (人類が初めて直接検出した重力波) を自分の手元で計算する
+  * この時点ではただの思い付き
+
+</div>
+
+---
+
+### 実現可能性の検討
+
+<div class="simple-box">
+
+* 調べてみたら、案外**やれそうな材料が揃っていた**
+  * 数値相対論の OSS フレームワーク **Einstein Toolkit**
+  * 公式ギャラリーが**パラメータと結果を完全公開**している
+  * Zenodo に**リファレンス用のシミュレーション結果**もある
+
+</div>
+
+<br>
+
+<div class="highlight-box">
+
+ど真ん中のモチベーション: **歴史的な物理イベントを自分の手元で計算してみたい**
+
+</div>
+
+---
+
+### 重力波とは？ (ざっくり)
+
+<div class="simple-box">
+
+* 質量を持つ物体が**加速度運動**することで生じる、**時空 (重力場) の波**
+  * 荷電粒子が加速すると**電磁波**が出るのと同じアナロジー
+  * 電荷 → 質量、 電磁場 → 重力場
+* 1916 年にアインシュタインが一般相対論で予言
+* 2015 年に LIGO が初めて直接観測に成功 **(GW150914)**
+  * 理論での予言から実証まで**約 100 年**！
+
+</div>
+
+
+---
+
+### GW150914 とは？
+
+<div class="simple-box">
+
+* **2015 年 9 月 14 日**、米 LIGO が検出した
+  人類**最初の重力波直接観測**イベント
+* 由来: **連星ブラックホール (BH) 合体** (Binary Black Hole merger)
+* 2 つの BH が 1 つに合体し、エネルギーを放出
+  * 質量 36 M☉ + 29 M☉ → 最終 BH 62 M☉
+  * **約 3 M☉ 分のエネルギーが重力波として宇宙に放出**
+* 数値相対論シミュレーションは観測波形の解析に極めて重要な役割を果たした
+
+</div>
+
+
+---
+
+### BBH 合体の 3 段階
+
+<div class="simple-box">
+
+<table>
+  <thead>
+    <tr>
+      <th>段階</th>
+      <th>何が起こるか</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>インスパイラル</strong></td>
+      <td>2 つの BH が<strong>らせん状に回りながら接近</strong></td>
+    </tr>
+    <tr>
+      <td><strong>マージャー</strong></td>
+      <td>2 つの BH が<strong>合体</strong>し共通 BH が形成、<strong>重力波を放出</strong></td>
+    </tr>
+    <tr>
+      <td><strong>リングダウン</strong></td>
+      <td>最終 BH が<strong>特定の周波数で振動しながら減衰</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<br>
+
+<div class="highlight-box">
+
+* この 3 段階を**定性的**に捉えられたかを検証
+
+</div>
+
+---
+
+### なぜ数値相対論は難しいのか
+
+<div class="simple-box">
+
+* 解くべきは **アインシュタイン方程式**
+  * 10 個の連立非線形偏微分方程式
+* **特異点を含む BH** をどう数値的に避けるか
+* **数値安定性**のための定式化が必要
+* 2005 年に初めて BBH 合体の数値シミュレーションに成功
+  * それまではインスパイラルからマージャーまで通して解ける現象が極めて限られていた
+
+</div>
+
+---
+
+### 現実的なマシン制約
+
+<div class="results-box">
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>公式ギャラリー</th>
+      <th><strong>本プロジェクト</strong></th>
+      <th>比</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>空間刻み h₀</td>
+      <td>1.224 M (細かい)</td>
+      <td><strong>2.143 M</strong></td>
+      <td><strong>1.75 倍粗い</strong></td>
+    </tr>
+    <tr>
+      <td>並列度</td>
+      <td>128 MPI プロセス</td>
+      <td><strong>1 MPI × OMP=16 (16 コア)</strong></td>
+      <td>約 1/8</td>
+    </tr>
+    <tr>
+      <td>メモリ</td>
+      <td>98 GB</td>
+      <td><strong>28.76 GiB peak</strong></td>
+      <td>約 1/3</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<small>※ 公式ギャラリーは内部解像度パラメータ N=28、本プロジェクトは N=16 (BH 周辺のグリッド点数)。</small>
+
+---
+
+### 解像度を落とす判断
+
+<div class="simple-box">
+
+* 自宅環境: **16 コア / 93 GiB RAM**
+* 公式の N=28 設定では **メモリは何とかなる**ものの、**リングダウン到達まで 16 日以上**かかる見込み
+  → 連休中に終わる計算、という制約と要件を満たさない
+* **解像度を N=16 に落として** 1.75 倍粗いグリッドで回す方針へ
+  * 軌道数・波形の **定性的再現** を狙う
+  * 検証は **Zenodo の N=28 reference データとの比較**で代替
+
+</div>
+
+---
+
+### 本自由研究の位置付け
+
+<div class="simple-box">
+
+**学術的な新規性・意義は無い**
+
+* 公式ギャラリー・LIGO 論文・後続の数値相対論論文で
+  **やり尽くされている**
+* 解像度 N=16 では LIGO 観測の精度比較に
+  使えるレベルには**精度不足**
+* プロはさらに先 — 例えば連星中性子星合体での重元素生成やニュートリノ放出など — を研究対象としている
+  * マルチメッセンジャー天文学の発達
+
+</div>
+
+---
+
+### 学術的意義だけが価値ではない
+
+<div class="simple-box">
+
+* **個人の好奇心**そのものがメインの動機
+* Dockerで**仮想環境の再現を容易**にしてしまえば、
+  **個人 PC でも追試できる**
+* 「**歴史的イベントを自分の手元で計算した**」という体験が、**筆者自身を含むアマチュアの科学愛好家に喜びを提供できる**のでは？
+
+</div>
+
+<br>
+
+<div class="highlight-box">
+
+* **「アマチュアが個人 PC でもここまでやれる」を見せる**
+
+</div>
+
+---
+
+### AIエージェントの活用
+
+<div class="simple-box">
+
+* シミュレーションの実行に Claude Opus 4.7 を活用
+  * AI エージェント活用の Pros & Cons は5月21日の個人開発集会で発表予定
+
+</div>
 
 
 ---
