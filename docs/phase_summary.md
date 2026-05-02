@@ -1,88 +1,184 @@
 # Phase 進行履歴サマリ
 
 元プロジェクト [gw150914-einstein-toolkit](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit)
-の Phase 0〜4 完了までの簡潔な記録。
+の Phase 0〜4 完了までの簡潔な記録。スライド向けに**物理シミュレーションとして
+何が問題だったか・どう解決したか**にフォーカスして書く。
+具体的なパラメータ名・ファイル名等の技術詳細は [technical_notes.md](technical_notes.md) 側に分離。
 
 ## Phase 一覧
 
 | Phase | 内容 | Issue | 主な成果 |
 | --- | --- | --- | --- |
 | 0 | プロジェクト初期化 | - | スコープ確定 (N=16 + 自宅 16 コア) |
-| 1 | Docker 環境構築 | [#1](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/1) | Ubuntu 20.04 + Kruskal release `ET_2025_05` のソースビルド完成 |
-| 2 | パラメータファイル取得・テスト基盤 | [#2](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/2) | rpar 取得 + Level 1/2 テスト整備、N=28 で TwoPunctures 6 分 18 秒 |
-| 3a | qc0-mclachlan による ET feasibility 確認 | [#10](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/10) | smoke 26 分で完走、make ターゲット化 |
-| 3b-i | N=28 メモリ・時間 feasibility 計測 | - | np=1 OMP=16 で 50 GiB / 16 日見込み → **N=16 方針へ転換** |
-| 3b-ii | N=16 対応の rpar grid 改変 | [#9](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/9) | sphere_inner_radius 拡大で 1.84 sec/iter, ringdown 5.7 日見込み |
-| 3c-1 | checkpoint write/restart 動作確認 | [#3](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/3) | np=1 で POSIX lock 不発、walltime + on_terminate 両経路 OK |
-| 3c-2 | Stage A (0 → 100 M) | [#3](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/3) | 6h51m, 100.013 M, peak 26.91 GiB |
-| 3c-3 | Stage B (100 → 1000 M) | [#21](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/21) | 49h39m, 1000.01 M, peak 28.76 GiB |
-| 3c-4 | Stage C (1000 → 1700 M) | [#3](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/3) | 27h54m, 1700.01 M, peak 22.79 GiB |
-| 4 | 軌道・波形の抽出とプロット | [#4](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/4) | Stage A/B/C 比較完走、Stage C overall_pass=True |
-| 5 | 3D 可視化 | [#5](https://github.com/s-sasaki-einstein-toolkit/issues/5) | 未着手 (オプション) |
+| 1 | Docker 環境構築 | [#1](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/1) | Ubuntu 20.04 + Kruskal release のソースビルド完成 |
+| 2 | パラメータファイル取得・テスト基盤 | [#2](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/2) | 公式 parfile 取得 + テスト整備 |
+| 3a | 簡易テスト問題による ET 動作確認 | [#10](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/10) | 26 分で完走、本体に問題なしを確認 |
+| 3b-i | N=28 メモリ・時間 feasibility 計測 | - | 完走に 16 日以上必要と判明 → **N=16 方針へ転換** |
+| 3b-ii | N=16 で公式パラメータが crash する問題の解決 | [#9](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/9) | 内側座標パッチの拡大で安定動作 |
+| 3c-1 | チェックポイント書き込み・再開動作確認 | [#3](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/3) | 長時間 run の中断再開が可能に |
+| 3c-2 | Stage A (0 → 100 M) 本番 run | [#3](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/3) | 約 7 時間で完走 |
+| 3c-3 | Stage B (100 → 1000 M, マージャー含む) | [#21](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/21) | 約 50 時間で完走、合体イベントを通過 |
+| 3c-4 | Stage C (1000 → 1700 M, ringdown 完成) | [#3](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/3) | 約 28 時間で完走、リングダウン波形を取得 |
+| 4 | 軌道・波形の抽出と公式値・Zenodo データとの比較 | [#4](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/4) | 全 7 check pass、プロジェクト目標達成 |
+| 5 | 3D 可視化 | [#5](https://github.com/s-sasaki-earthsea-wizard/gw150914-einstein-toolkit/issues/5) | 未着手 (オプション) |
 
 ## 全体タイムライン (2026 年)
 
-```
+```text
 04 月 04 日頃  Phase 0 開始 (プロジェクト発案、スコープ確定)
 04 月        Phase 1 完了 (Docker 環境構築)
-04 月 24 日   Phase 2 完了 (rpar 取得 + テスト基盤)
-04 月 24 日   Phase 3a 完了 (qc0 smoke 26 分)
-              Phase 3b-i 完了 (N=28 feasibility 確認 → N=16 方針確定)
-04 月 25 日   Phase 3b-ii 完了 (N=16 grid 改変 + sphere_inner_radius 拡大)
-04 月 25 日   Phase 3c-1 完了 (checkpoint 動作確認)
-04 月 26 日   Phase 3c-2 完了 (Stage A 100 M)
-04 月 29 日   Phase 3c-3 完了 (Stage B 1000 M)
-05 月 01 日   Phase 3c-4 完了 (Stage C 1700 M)
-05 月 01 日   Phase 4 完了 (Stage A/B/C 全比較 + 全 7 check pass)
+04 月 24 日   Phase 2 完了 (パラメータファイル取得 + テスト基盤)
+04 月 24 日   Phase 3a 完了 (簡易テスト問題で ET 本体の正常動作を確認)
+              Phase 3b-i 完了 (N=28 では時間が足りないことを確認、N=16 方針確定)
+04 月 25 日   Phase 3b-ii 完了 (N=16 で安定動作する設定の確立)
+04 月 25 日   Phase 3c-1 完了 (チェックポイント動作確認)
+04 月 26 日   Phase 3c-2 完了 (Stage A: inspiral 早期 100 M)
+04 月 29 日   Phase 3c-3 完了 (Stage B: マージャー到達 1000 M)
+05 月 01 日   Phase 3c-4 完了 (Stage C: ringdown 1700 M)
+05 月 01 日   Phase 4 完了 (公式値・Zenodo データとの比較で全 7 check pass)
 ```
 
 ## 設計判断のターニングポイント
 
-### 1. N=28 → N=16 への解像度引き下げ (Phase 3b-i)
+スライドで語る価値があるのは「物理シミュレーションとして何が問題で、どう解決したか」
+の物語の部分。以下に主要な 4 点をまとめる。
 
-N=28 は 16 コアでも物理的にメモリは足りる (peak 50 GiB, 80 GB 上限内)。
-しかし **ringdown まで到達するのに wall time 16 日以上** 必要と判明。
-ユーザ目標 (~2 週間) では完走不可能。
-→ 解像度 N=16 (空間刻み 1.75 倍粗い) に落として 1〜3 日で完走させる方針へ転換。
-**検証は Zenodo 10.5281/zenodo.155394 の N=28 reference データとの比較**
-で代替する。
+### 1. 解像度を公式の N=28 から N=16 に下げる判断 (Phase 3b-i)
 
-### 2. rpar grid 改変の真因特定 (Phase 3b-ii)
+#### 問題
 
-公式 GW150914.rpar は **N=28 専用の grid 設計**。N<28 では Carpet 内部の
-prolongation buffer が物理単位で 1.75 倍に広がり、inter-patch 境界に侵入
-して `Interpolate2/test.cc:77` で abort する。
-事前仮説「`maxrls` を縮小すれば level-1 box が縮んで侵入しない」は実測で否定。
-**真の解決策は inner Cartesian patch を物理的に拡大すること** (sphere_inner_radius
-51.40 M → 77.10 M = rpar 自然 step の 9 倍に snap)。
+公式ギャラリーは N=28 (空間刻み h₀ ≈ 1.22 M、時間刻み dt_it ≈ 0.0022 M) で計算
+されているが、これは **128 コア × 2.8 日** (約 8700 コア時間) を要する。
+本プロジェクトの環境 (16 コア / 80 GB メモリ) ではメモリは何とか足りるが、
+**ringdown まで到達するのに wall time 16 日以上**かかると見積もられた
+(2 週間以内に完走したいという目標に対して未達)。
 
-### 3. Phase 3c の staged validation (3c-1 〜 3c-4)
+#### 解決
 
-1700 M まで一気に走らせて Zenodo と一括比較するのは効率が悪い
-(失敗箇所の局所化困難 + 早期失敗時のコスト過大)。
-**3c-1 (checkpoint) → 3c-2 (Stage A 100 M) → 3c-3 (Stage B 1000 M)
-→ 3c-4 (Stage C 1700 M)** の段階制にして、各 stage 終了後に Zenodo
-比較で go/no-go 判定する方式を採用。
+解像度を **N=16 (空間刻みが 1.75 倍粗い)** に落として 1〜3 日で完走させる。
+精度は犠牲になるが、軌道・波形の**定性的な再現**が目的なので許容できる。
+精度検証は Zenodo の公式 N=28 計算結果データセット
+([10.5281/zenodo.155394](https://doi.org/10.5281/zenodo.155394))
+との比較で代替する。
 
-### 4. 中断再開フローの教訓 (Phase 3c-3)
+**結果**: Stage A+B+C で wall time 合計 84 時間 (約 3.5 日) で完走。
+N=28 reference との比較でも全項目で予想以上の高精度一致 (詳細は
+[results.md](results.md))。
 
-Stage B 途中の中断・再投入で **Stage A の checkpoint から再起動してしまう**
-事故が発生。`recover = autoprobe` は `recover_dir` のみ参照するため、
-`run-*` (cross-stage continuity 用) と `resume-*` (同 stage 中断再開用) の
-ターゲットを分離。`cactus_sim` 二重起動 pre-check も追加。
+### 2. 公式パラメータが N=16 では crash する問題の解決 (Phase 3b-ii)
 
-## Zenodo N=28 reference データの内訳調査
+#### 問題
 
-[Phase 4 タスク A1〜A5] で確認した要点:
+公式の連星 BH 用パラメータファイルは N=28 専用に最適化されていた。
+解像度を粗くすると、シミュレーション開始直後に座標系の境界処理エラーで
+abort してしまう。
 
-- アーカイブは 466 MB tar.xz (展開後 720 MB)
-- 6 個のディレクトリ `output-0000` 〜 `output-0005` は **checkpoint ではなく
-  SimFactory walltime restart segment**。output-0000 (0–246 M) が
-  Stage A 100 M をカバー
-- `mp_psi4.h5` は **81 (l, m) modes × 7 抽出半径** [100, 115, 136, 167, 214, 300, 500] M
-- t=100 M reference: D=9.773 M, |ψ4₂₂(r=100)|=1.67e-5,
-  χ₁=+0.3102, χ₂=−0.4604 (rpar 設定値と完全一致、drift < 3e-4)
-- QLM 慣習: `qlm_spin` は **角運動量 J (次元あり)**、
-  無次元スピン χ = J/M_horizon² で換算する必要あり
-- **constraint norm 出力 (Hamiltonian/Momentum) は Zenodo 側になし**
-  → self-consistency 検証は N=16 自前 run のみで実施
+物理的な原因は、AMR (Adaptive Mesh Refinement; 適応的メッシュ細分化) が
+ブラックホール周辺で必要とする「のりしろ領域 (buffer zone)」が
+**物理スケールで解像度に逆比例して広がる** ことにある。
+
+GW150914 の計算では、内側はデカルト座標で BH の動的領域を覆い、外側は
+6 枚のパッチを貼り合わせた多面体座標で球面波を遠方まで運ぶ構成
+(マルチパッチ座標系) を採用している。粗い解像度ではのりしろが大きくなり、
+**内側パッチと外側パッチの継ぎ目領域に侵入**してしまうため、
+境界補間処理が破綻する。
+
+#### 当初の仮説 (誤りだった)
+
+「外側の AMR レベルを減らして高解像度の箱を小さくすれば、のりしろも継ぎ目に
+届かなくなるだろう」と推測したが、**実測でこの仮説は否定**された。
+のりしろの幅自体は AMR の箱サイズではなく**最も細かい格子の幅**で決まるため、
+箱を縮めても侵入は変わらなかった。
+
+#### 真の解決策
+
+**内側のデカルト座標パッチ自体を物理的に大きくする**。
+これにより、のりしろが広がっても継ぎ目に届かず、AMR 階層を犠牲にせずに
+N=16 で安定動作させることができた。
+
+#### 教訓
+
+数値相対論の AMR + マルチパッチ構成では、解像度を変えるとパッチ境界・
+のりしろ領域の物理スケールが変わる。**パラメータは単一の解像度に対して
+最適化されており、解像度を変える際は単に格子数を変えるだけでは済まない**
+ことを身をもって知った。公式ギャラリーが特定の N を「推奨値」として
+明記している意味の一端が理解できた。
+
+### 3. 1700 M の長時間 run を 3 段階に分割する戦略 (Phase 3c-2 〜 3c-4)
+
+#### 問題
+
+GW150914 の合体・ringdown 完成までは物理時間で約 1700 M 必要 (M = 太陽質量 ×
+68 個分 ≈ 0.33 ms に相当)。これを N=16 でも合計 80 時間以上の wall time で
+連続実行する。
+
+途中で異常 (crash・物理的におかしな挙動) に気付かず最後まで走らせると:
+
+- 失敗箇所の特定が困難
+- 早期に失敗していた場合のリソース浪費が大きい
+
+#### 解決
+
+物理イベントの節目で 3 段階に分割し、各段階終了後に Zenodo reference との
+比較で go/no-go 判定する staged validation 方式を採用:
+
+| Stage | 物理時間範囲 | この段階で検証する物理 |
+| --- | --- | --- |
+| **Stage A** | 0 → 100 M | 初期データの正しさ、inspiral 早期の軌道・スピン保存 |
+| **Stage B** | 100 → 1000 M | inspiral 全体・マージャー到達・最終 BH の質量とスピン |
+| **Stage C** | 1000 → 1700 M | リングダウン完成・重力波 ψ₄ の peak 振幅と到達時刻 |
+
+各段階での pass/fail 判定基準は事前に定めて、後段に進む前に必ずチェックを通す
+([results.md](results.md))。これにより、もし途中段階で問題が見つかっていれば、
+その時点で原因究明・修正に戻れる体制を作った。
+
+#### 結果
+
+3 段階すべて初回で pass。Stage A 7 時間、Stage B 50 時間、Stage C 28 時間。
+Stage C のメモリ消費が Stage A/B より小さいのは、merger 後に高解像度層が
+common horizon 周辺のみで済み、AMR 構造が単純化したため (これも事前見積もり
+の精緻化につながる発見だった)。
+
+### 4. 中断再開フローで Stage を取り違えた事故 (Phase 3c-3)
+
+#### 問題
+
+Stage B (約 50 時間 run) を途中で別作業のため中断する必要があり、後で再投入
+したところ、**Stage B の中断時点ではなく Stage A 終了時点から再開してしまう**
+事故が起きた (約 26 時間分のロス)。
+
+物理的な計算自体には影響なかったが、運用ミスで多大な計算資源を浪費しかねない
+パターンだったため、再発防止策を入れた。
+
+#### 解決
+
+「次の段階へ進む再開」と「同じ段階の中断再開」は本質的に違う操作なので、
+それぞれ専用のコマンドを分離した。さらに、シミュレーションプロセスの
+**二重起動防止チェック**を追加 (同じ出力ディレクトリに 2 系統が並行書き込み
+する事故を防ぐ)。
+
+#### 教訓
+
+長時間 run を扱う数値相対論の運用では、計算自体の正しさだけでなく
+**中断再開のオペレーション設計**が重要。チェックポイントから「どこに戻るか」
+の指定が暗黙的だと容易に事故を起こすので、明示的な API 分離が望ましい。
+
+## Zenodo N=28 reference データを使った検証準備 (Phase 4)
+
+公式ギャラリーは「マージャーまでの時間 = 899 M」「最終 BH 質量 = 0.95 M」
+等の最終的な数値しか公開していないため、波形や軌道の比較には別途
+N=28 で実際に走らせた生データが必要だった。
+
+[Zenodo 10.5281/zenodo.155394](https://doi.org/10.5281/zenodo.155394) に
+公式 N=28 計算の出力データ (約 720 MB) が公開されており、これを取得して
+N=16 自前 run と直接比較する設計とした。準備過程で以下を確認:
+
+- データセットの構成 (時間刻み、出力範囲、含まれる物理量)
+- 重力波 ψ₄ が複数の球面 (半径 100, 115, ..., 500 M) で抽出されていること
+- ブラックホールのスピン値が QuasiLocalMeasures (QLM) 慣習で「角運動量 J
+  (次元あり)」として保存されており、無次元スピン χ = J/M² への換算が必要なこと
+- Zenodo 側に Hamiltonian / Momentum 制約の出力がないため、self-consistency
+  チェック (時空が真空 Einstein 方程式をどれだけ満たしているか) は N=16 自前
+  データのみで実施する必要があること
+
+これにより、Phase 4 の比較スクリプトの設計方針が確定した。
